@@ -1,28 +1,24 @@
 "use client";
 import React from 'react'
-import { Navbar,Container, Nav } from 'react-bootstrap'
+import { Navbar,Container, Nav, Form, Button } from 'react-bootstrap'
 
-const Navigation = () => {
+const Navigation = ({searchData}) => {
   return (
-    <Navbar expand="lg" className='sticky-top border border-bottom'>
+    <Navbar expand="lg" className='bg-light sticky-top border-bottom'>
         <Container>
             <Navbar.Brand className='lead fw-bold'>
                 Weather app
             </Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse>
-                <Nav className='ms-auto gap-3'>
-                    <Nav.Item>
-                        <Nav.Link target='_blank' href='https://github.com/karlrobeck/weather-app'>
-                            Repositiory
-                        </Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link>
-                            About
-                        </Nav.Link>
-                    </Nav.Item>
-                </Nav>
+                <Form className='ms-auto d-flex gap-2' onSubmit={searchData}>
+                    <Form.Group>
+                        <Form.Control type="text" placeholder="Search location" />
+                    </Form.Group>
+                    <Button type='submit' variant='outline-primary'>
+                        Search
+                    </Button>
+                </Form>
             </Navbar.Collapse>
         </Container>
     </Navbar>

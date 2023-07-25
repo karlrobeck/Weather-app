@@ -4,6 +4,7 @@ import { Form, Button, Container, Card, Spinner } from 'react-bootstrap';
 import React, { useEffect,useState } from 'react'
 import Image from 'next/image';
 import { CalendarEvent, Cloud, ThermometerHalf, ThermometerHigh, ThermometerLow } from 'react-bootstrap-icons';
+import WeatherCard from './WeatherCard';
 
 const WeatherData = ({baseKey}) => {
 
@@ -19,37 +20,22 @@ const WeatherData = ({baseKey}) => {
     }
 
     useEffect(() => {
-        /* get coordinates of the user */
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(success, error);
-          } else {
-            console.log("Geolocation not supported");
-          }
-          
-          async function success(position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            
-            const res = await fetch(`https://api.weatherapi.com/v1/current.json?key=${baseKey}&q=${latitude},${longitude}`);
+        async function fetchData(){    
+        const res = await fetch(`https://api.weatherapi.com/v1/current.json?key=${baseKey}&q=auto:ip`);
 
-            const json = await res.json();
+        const json = await res.json();
 
-            setData(json)
+        setData(json)
 
-            console.log(json)
-
-          }
-          
-          function error() {
-            console.log("Unable to retrieve your location");
-          }
-
+        console.log(json)
+        }
+        fetchData()
         /* use coordinates to get weather */
     },[])
 
     return (
         <div className="py-5">
-            <Container className='w-75'>
+            <Container className='w-25'>
                 <Form onSubmit={handleSubmit} className='d-flex gap-2'>
                     <Form.Group>
                         <Form.Control type='text' placeholder='Search Location' />
@@ -78,53 +64,34 @@ const WeatherData = ({baseKey}) => {
                     </time>
                 </div>
                 <div className='d-flex justify-content-between gap-4'>
-                    <Card className='w-25'>
-                        <Card.Header className='d-flex justify-content-between align-items-center'>
-                            <small>Condition</small>
-                            <Cloud />
-                        </Card.Header>
-                        <Card.Body>
-                            {data ? data?.current?.condition?.text : <Spinner animation='border' />}
-                        </Card.Body>
-                    </Card>
-                    <Card className='w-25'>
-                        <Card.Header className='d-flex justify-content-between align-items-center'>
-                            <small>Temperature ℃</small>
-                            {data?.current?.temp_c < 35 &&
-                                <ThermometerLow />
-                            }
-                            {data?.current?.temp_c > 35 &&
-                                <ThermometerHalf />
-                            }
-                        </Card.Header>
-                        <Card.Body>
-                            {data ? data?.current?.temp_c : <Spinner animation='border' />}
-                        </Card.Body>
-                    </Card>
-                    <Card className='w-25'>
-                        <Card.Header className='d-flex justify-content-between align-items-center'>
-                            <small>Temperature ℉</small>
-                            {data?.current?.temp_f < 90 &&
-                                <ThermometerLow />
-                            }
-                            {data?.current?.temp_f > 90 &&
-                                <ThermometerHalf />
-                            }
-                        </Card.Header>
-                        <Card.Body>
-                            {data ? data?.current?.temp_f : <Spinner animation='border'/>}
-                        </Card.Body>
-                    </Card>
-                    <Card className='w-25'>
-                        <Card.Header className='d-flex justify-content-between align-items-center'>
-                            <small>Forecast</small>
-                            <CalendarEvent />
-                        </Card.Header>
-                        <Card.Body>
-                            {data ? data?.current?.is_day <= 1 ? 
-                            "today" : `day 1-${data?.current?.is_day}` : <Spinner animation='border' />}
-                        </Card.Body>
-                    </Card>
+                    <WeatherCard 
+                    header={"Condition"} 
+                    icon={<Cloud />} 
+                    data={data?.current?.condition?.text}
+                    />
+                    <WeatherCard 
+                    header={"Temperature ℃"} 
+                    icon={data?.current?.temp_c ? 35 &&
+                        <ThermometerLow /> :<ThermometerHalf />
+                    }  
+                    data={data?.current?.temp_c}
+                    />
+                    <WeatherCard 
+                    header={"Temperature ℉"} 
+                    icon={data?.current?.temp_f < 90 ?
+                        <ThermometerLow /> : <ThermometerHalf />
+                    }  
+                    data={data?.current?.temp_f}
+                    />
+                    <WeatherCard 
+                    header={"Forecast"} 
+                    icon={data?.current?.temp_f < 90 ?
+                        <ThermometerLow /> : <ThermometerHalf />
+                    }  
+                    data={data && data?.current?.is_day <= 1 ? 
+                        "today" : `day 1-${data?.current?.is_day}`
+                    }
+                    />
                 </div>
             </Container>
         </div>
