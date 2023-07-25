@@ -1,13 +1,13 @@
 "use client";
 
-import { Form,Button,Container, Card } from 'react-bootstrap';
+import { Form, Button, Container, Card, Spinner } from 'react-bootstrap';
 import React, { useEffect,useState } from 'react'
 import Image from 'next/image';
 import { CalendarEvent, Cloud, ThermometerHalf, ThermometerHigh, ThermometerLow } from 'react-bootstrap-icons';
 
 const WeatherData = ({baseKey}) => {
 
-    const [data, setData] = useState({})
+    const [data, setData] = useState(undefined)
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -60,7 +60,7 @@ const WeatherData = ({baseKey}) => {
                 </Form>
                 <div className='py-3 d-flex justify-content-between align-items-center'>
                     <div>
-                        <div className='d-flex gap-2 align-items-center'>
+                        {data ? <div className='d-flex gap-2 align-items-center'>
                             <h1>
                                 {data?.location?.region}, {data?.location?.name}
                             </h1>
@@ -68,7 +68,7 @@ const WeatherData = ({baseKey}) => {
                             <small>
                                 {data?.location?.lat} , {data?.location?.lon}
                             </small>
-                        </div>
+                        </div> : <Spinner animation='border' />}
                         <small>
                             {data?.location?.country}
                         </small>
@@ -84,7 +84,7 @@ const WeatherData = ({baseKey}) => {
                             <Cloud />
                         </Card.Header>
                         <Card.Body>
-                            {data?.current?.condition?.text}
+                            {data ? data?.current?.condition?.text : <Spinner animation='border' />}
                         </Card.Body>
                     </Card>
                     <Card className='w-25'>
@@ -98,7 +98,7 @@ const WeatherData = ({baseKey}) => {
                             }
                         </Card.Header>
                         <Card.Body>
-                            {data?.current?.temp_c}
+                            {data ? data?.current?.temp_c : <Spinner animation='border' />}
                         </Card.Body>
                     </Card>
                     <Card className='w-25'>
@@ -112,7 +112,7 @@ const WeatherData = ({baseKey}) => {
                             }
                         </Card.Header>
                         <Card.Body>
-                            {data?.current?.temp_f}
+                            {data ? data?.current?.temp_f : <Spinner animation='border'/>}
                         </Card.Body>
                     </Card>
                     <Card className='w-25'>
@@ -121,8 +121,8 @@ const WeatherData = ({baseKey}) => {
                             <CalendarEvent />
                         </Card.Header>
                         <Card.Body>
-                            {data?.current?.is_day <= 1 ? 
-                            "today" : `day 1-${data?.current?.is_day}`}
+                            {data ? data?.current?.is_day <= 1 ? 
+                            "today" : `day 1-${data?.current?.is_day}` : <Spinner animation='border' />}
                         </Card.Body>
                     </Card>
                 </div>
