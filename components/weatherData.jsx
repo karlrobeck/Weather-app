@@ -10,7 +10,7 @@ const WeatherData = ({baseKey}) => {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const res = await fetch(`http://api.weatherapi.com/v1/current.json?key=${baseKey}&q=${e.target[0].value}`)
+        const res = await fetch(`https://api.weatherapi.com/v1/current.json?key=${baseKey}&q=${e.target[0].value}`)
         const json = await res.json()
 
         setData(json)
@@ -29,7 +29,7 @@ const WeatherData = ({baseKey}) => {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
             
-            const res = await fetch(`http://api.weatherapi.com/v1/current.json?key=${baseKey}&q=${latitude},${longitude}`);
+            const res = await fetch(`https://api.weatherapi.com/v1/current.json?key=${baseKey}&q=${latitude},${longitude}`);
 
             const json = await res.json();
 
