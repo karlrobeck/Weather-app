@@ -121,7 +121,7 @@ const WeatherData = ({baseKey}) => {
                             <CalendarEvent />
                         </Card.Header>
                         <Card.Body>
-                            {data?.current?.is_day === 1 ? 
+                            {data?.current?.is_day <= 1 ? 
                             "today" : `day 1-${data?.current?.is_day}`}
                         </Card.Body>
                     </Card>
