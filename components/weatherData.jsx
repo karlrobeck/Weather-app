@@ -1,8 +1,9 @@
 "use client";
 
-import { Form,Button } from 'react-bootstrap';
+import { Form,Button,Container, Card } from 'react-bootstrap';
 import React, { useEffect,useState } from 'react'
 import Image from 'next/image';
+import { CalendarEvent, Cloud, ThermometerHalf, ThermometerHigh, ThermometerLow } from 'react-bootstrap-icons';
 
 const WeatherData = ({baseKey}) => {
 
@@ -35,6 +36,8 @@ const WeatherData = ({baseKey}) => {
 
             setData(json)
 
+            console.log(json)
+
           }
           
           function error() {
@@ -45,33 +48,86 @@ const WeatherData = ({baseKey}) => {
     },[])
 
     return (
-        <app>
-            <Form className='pt-5 pb-3 d-flex h-25 justify-content-center align-items-center gap-2' onSubmit={handleSubmit}>
-            <Form.Group>
-                <Form.Control type="text" placeholder='Search Location' />
-            </Form.Group>
-            <Button type='submit' variant="outline-primary">
-                Search
-            </Button>
-            </Form>
-            <div className='p-5 mb-3 border border-3 rounded-3'>
-                <div className='d-flex justify-content-between'>
-                    <h1>
-                        {data.location?.name}
-                    </h1>
-                    <img width={40} height={40} src={`${data.current?.condition?.icon}`} />
-                </div>
-                <div className='d-flex justify-content-between align-items-center'>
-                    <small>
-                        {data.location?.country}
-                    </small>
+        <div className="py-5">
+            <Container className='w-75'>
+                <Form onSubmit={handleSubmit} className='d-flex gap-2'>
+                    <Form.Group>
+                        <Form.Control type='text' placeholder='Search Location' />
+                    </Form.Group>
+                    <Button type='submit' variant='outline-primary'>
+                        Search
+                    </Button>
+                </Form>
+                <div className='py-3 d-flex justify-content-between align-items-center'>
+                    <div>
+                        <div className='d-flex gap-2 align-items-center'>
+                            <h1>
+                                {data?.location?.name}
+                            </h1>
+                            <img width={40} height={40} src={data?.current?.condition?.icon} alt="icon" />
+                            <small>
+                                {data?.location?.lat} , {data?.location?.lon}
+                            </small>
+                        </div>
+                        <small>
+                            {data?.location?.country}
+                        </small>
+                    </div>
                     <time>
-                    {data.location?.localtime}
+                        {data?.current?.last_updated}
                     </time>
                 </div>
-                <p>{data.current?.condition?.text}</p>
-            </div>
-        </app>
+                <div className='d-flex justify-content-between gap-4'>
+                    <Card className='w-25'>
+                        <Card.Header className='d-flex justify-content-between align-items-center'>
+                            <small>Condition</small>
+                            <Cloud />
+                        </Card.Header>
+                        <Card.Body>
+                            {data?.current?.condition?.text}
+                        </Card.Body>
+                    </Card>
+                    <Card className='w-25'>
+                        <Card.Header className='d-flex justify-content-between align-items-center'>
+                            <small>Temperature ℃</small>
+                            {data?.current?.temp_c < 35 &&
+                                <ThermometerLow />
+                            }
+                            {data?.current?.temp_c > 35 &&
+                                <ThermometerHalf />
+                            }
+                        </Card.Header>
+                        <Card.Body>
+                            {data?.current?.temp_c}
+                        </Card.Body>
+                    </Card>
+                    <Card className='w-25'>
+                        <Card.Header className='d-flex justify-content-between align-items-center'>
+                            <small>Temperature ℉</small>
+                            {data?.current?.temp_f < 90 &&
+                                <ThermometerLow />
+                            }
+                            {data?.current?.temp_f > 90 &&
+                                <ThermometerHalf />
+                            }
+                        </Card.Header>
+                        <Card.Body>
+                            {data?.current?.temp_f}
+                        </Card.Body>
+                    </Card>
+                    <Card className='w-25'>
+                        <Card.Header className='d-flex justify-content-between align-items-center'>
+                            <small>Forecast</small>
+                            <CalendarEvent />
+                        </Card.Header>
+                        <Card.Body>
+                            {data?.current?.is_day === 1 ? 
+                            "today" : `day 1-${data?.current?.is_day}`}
+                        </Card.Body>
+                    </Card>
+                </div>
+            </Container>
+        </div>
     )
 }
 
