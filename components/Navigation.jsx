@@ -4,16 +4,16 @@ import { Navbar,Container, Nav } from 'react-bootstrap'
 
 const Navigation = () => {
   return (
-    <Navbar expand="lg" className='sticky-top'>
+    <Navbar expand="lg" className='sticky-top border border-bottom'>
         <Container>
             <Navbar.Brand className='lead fw-bold'>
                 Weather app
             </Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse>
-                <Nav className='ms-auto gap-3 px-5'>
+                <Nav className='ms-auto gap-3'>
                     <Nav.Item>
-                        <Nav.Link>
+                        <Nav.Link target='_blank' href='https://github.com/karlrobeck/weather-app'>
                             Repositiory
                         </Nav.Link>
                     </Nav.Item>

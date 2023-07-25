@@ -62,7 +62,7 @@ const WeatherData = ({baseKey}) => {
                     <div>
                         <div className='d-flex gap-2 align-items-center'>
                             <h1>
-                                {data?.location?.name}
+                                {data?.location?.region}, {data?.location?.name}
                             </h1>
                             <img width={40} height={40} src={data?.current?.condition?.icon} alt="icon" />
                             <small>
