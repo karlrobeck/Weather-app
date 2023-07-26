@@ -6,7 +6,7 @@ const Navigation = ({searchData}) => {
   return (
     <Navbar expand="lg" className='bg-light sticky-top border-bottom'>
         <Container>
-            <Navbar.Brand className='lead fw-bold'>
+            <Navbar.Brand href='/' className='lead fw-bold'>
                 Weather app
             </Navbar.Brand>
             <Navbar.Toggle />

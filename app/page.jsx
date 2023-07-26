@@ -50,7 +50,7 @@ export default function Home() {
   },[])
 
   return (
-    <main>
+    <main className=''>
       <Navigation searchData={handleSubmit} />
       <Row className='h-100'>
         <Col className='col-5'>
